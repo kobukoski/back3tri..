@@ -1,0 +1,30 @@
+DROP TABLE Produto;
+
+DROP TABLE Possui1;
+DROP TABLE Compra;
+DROP TABLE Endereco;
+DROP TABLE Cliente;
+DROP TABLE Possui;
+CREATE TABLE Produto
+(
+ id INT PRIMARY KEY AUTO_INCREMENT,  
+ nome VARCHAR(150) NOT NULL,  
+ descricao VARCHAR(500) NOT NULL,  
+ categoria VARCHAR(100) NOT NULL,  
+ preco VARCHAR(100) NOT NULL,
+ quantidade
+);
+CREATE TABLE horario_aula
+(
+ id INT PRIMARY KEY AUTO_INCREMENT,  
+ idaula INT NOT NULL,  
+ dia_semana VARCHAR(7) NOT NULL,  
+ ordem INT NOT NULL 
+);
+ALTER TABLE horario_aula ADD FOREIGN KEY(idaula) REFERENCES aula (id);
+INSERT INTO aula (serie, turma, componente, professor) VALUES
+("2º", "DSB", "Programação Back End", "Ronaldo")
+DELETE FROM aula WHERE id = 10;
+UPDATE aula SET professor = "Patrick"
+WHERE id = 2;
+SELECT componente, professor FROM aula WHERE id = 10;
