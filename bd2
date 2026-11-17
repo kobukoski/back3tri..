@@ -1,0 +1,60 @@
+DROP TABLE IF EXISTS Possui;
+DROP TABLE IF EXISTS Compra;
+DROP TABLE IF EXISTS Produto;
+DROP TABLE IF EXISTS Endereco;
+DROP TABLE IF EXISTS Cliente;
+
+CREATE TABLE Cliente
+(
+    id       INT PRIMARY KEY AUTO_INCREMENT,
+    celular  VARCHAR(15)  NOT NULL,
+    senha    VARCHAR(255) NOT NULL,
+    cpf      CHAR(14)     NOT NULL UNIQUE,
+    email    VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE Endereco
+(
+    id      INT PRIMARY KEY AUTO_INCREMENT,
+    rua     VARCHAR(150) NOT NULL,
+    estado  CHAR(2)      NOT NULL,
+    numero  VARCHAR(10)  NOT NULL,
+    bairro  VARCHAR(80)  NOT NULL,
+    cidade  VARCHAR(80)  NOT NULL
+);
+
+CREATE TABLE Produto
+(
+    id          INT PRIMARY KEY AUTO_INCREMENT,
+    nome        VARCHAR(150)  NOT NULL,
+    descricao   VARCHAR(500)  NOT NULL,
+    categoria   VARCHAR(50)   NOT NULL,
+    preco       DECIMAL(10,2) NOT NULL,
+    quantidade  INT           NOT NULL
+);
+CREATE TABLE Compra
+(
+    id               INT PRIMARY KEY AUTO_INCREMENT,
+    idCliente        INT           NOT NULL,
+    idEndereco       INT           NOT NULL,
+    data_compra      DATETIME      NOT NULL,
+    forma_pagamento  VARCHAR(30)   NOT NULL,
+    valor_total      DECIMAL(10,2) NOT NULL,
+    CONSTRAINT fk_compra_cliente
+        FOREIGN KEY (idCliente)  REFERENCES Cliente(id),
+    CONSTRAINT fk_compra_endereco
+        FOREIGN KEY (idEndereco) REFERENCES Endereco(id)
+);
+
+CREATE TABLE Possui
+(
+    idCompra        INT           NOT NULL,
+    idProduto       INT           NOT NULL,
+    valor_unitario  DECIMAL(10,2) NOT NULL,
+    quantidade      INT           NOT NULL,
+    PRIMARY KEY (idCompra, idProduto),
+    CONSTRAINT fk_possui_compra
+        FOREIGN KEY (idCompra)  REFERENCES Compra(id),
+    CONSTRAINT fk_possui_produto
+        FOREIGN KEY (idProduto) REFERENCES Produto(id)
+);
