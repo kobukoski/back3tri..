@@ -17,7 +17,7 @@ CREATE TABLE Compra
  id INT PRIMARY KEY AUTO_INCREMENT,  
  idCliente INT NOT NULL,  
  idEnereco INT NOT NULL,  
- ordedatam DATETIME NOT NULL,
+ data_compra DATETIME NOT NULL,
  forma_pagamento VARCHAR(30) NOT NULL,
  valor_total DECIMAL(10,2) NOT NULL
 );
@@ -41,15 +41,8 @@ CREATE TABLE Cliente
 CREATE TABLE Possui
 (
  id INT PRIMARY KEY AUTO_INCREMENT,  
- idCompra VARCHAR(150) NOT NULL,  
- idProduto VARCHAR(500) NOT NULL,  
- valor_unitario VARCHAR(50) NOT NULL,  
+ idCompra INT NOT NULL,  
+ idProduto INT NOT NULL,  
+ valor_unitario DECIMAL(10,2) NOT NULL,  
  quantidade INT NOT NULL
 );
-ALTER TABLE horario_aula ADD FOREIGN KEY(idaula) REFERENCES aula (id);
-INSERT INTO aula (serie, turma, componente, professor) VALUES
-("2º", "DSB", "Programação Back End", "Ronaldo")
-DELETE FROM aula WHERE id = 10;
-UPDATE aula SET professor = "Patrick"
-WHERE id = 2;
-SELECT componente, professor FROM aula WHERE id = 10;
