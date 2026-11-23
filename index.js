@@ -4,8 +4,6 @@ app.use(express.json())
 const port = 3000
 const db = require("./db")
 
-// --- ROTAS DE AULA ---
-
 app.get("/aula", async (req, res) => {
     try {
         const resultado = await db.pool.query("SELECT * FROM aula")
@@ -31,8 +29,8 @@ app.post("/aula", async (req, res) => {
 app.delete("/aula/:id", async (req, res) => {
     try {
         const { id } = req.params
-        
         const [existe] = await db.pool.query("SELECT id FROM aula WHERE id = ?", [id])
+        
         if (existe.length === 0) {
             return res.status(404).json({ erro: "Aula não encontrada." })
         }
@@ -46,8 +44,6 @@ app.delete("/aula/:id", async (req, res) => {
         res.status(500).json({ erro: "Erro ao excluir aula." })
     }
 })
-
-// --- ROTAS DE HORÁRIO ---
 
 app.post("/horario", async (req, res) => {
     try {
@@ -72,20 +68,7 @@ app.post("/horario", async (req, res) => {
 
 app.get("/horario/:dia", async (req, res) => {
     try {
-        const { dia } = req.params
-        const [linhas] = await db.pool.query(
-            `SELECT h.id, h.dia_semana, h.ordem, a.componente, a.professor 
-             FROM horario_aula h 
-             JOIN aula a ON a.id = h.idaula 
-             WHERE h.dia_semana = ? 
-             ORDER BY h.ordem`, 
-            [dia]
-        )
-        
-        if (linhas.length === 0) {
-            return res.status(404).json({ erro: "Nenhum horário neste dia." })
-        }
-        
+        const [linhas] = await db.pool.query("SELECT h.id, h.dia_semana, h.ordem, a.componente, a.professor FROM horario_aula h JOIN aula a ON h.idaula = a.id WHERE h.dia_semana = ?", [req.params.dia])
         res.status(200).json(linhas)
     } catch (erro) {
         res.status(500).json({ erro: "Erro ao buscar horários." })
@@ -94,8 +77,7 @@ app.get("/horario/:dia", async (req, res) => {
 
 app.delete("/horario/:id", async (req, res) => {
     try {
-        const { id } = req.params
-        const [resultado] = await db.pool.query("DELETE FROM horario_aula WHERE id = ?", [id])
+        const [resultado] = await db.pool.query("DELETE FROM horario_aula WHERE id = ?", [req.params.id])
         
         if (resultado.affectedRows === 0) {
             return res.status(404).json({ erro: "Horário não encontrado." })
